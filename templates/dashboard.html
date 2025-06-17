@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(to right, #e8f8ff, #ffffff);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding-top: 80px; /* space for navbar */
+    }
+
+    .tasks-container {
+        max-width: 800px;
+        margin: auto;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        animation: fadeIn 0.7s ease-in-out;
+    }
+
+    h2 {
+        text-align: center;
+        color: #1976d2;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        margin-bottom: 15px;
+        padding: 10px;
+    }
+
+    .btn-success {
+        border-radius: 8px;
+        background-color: #388e3c;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+        background-color: #2e7d32;
+        transform: scale(1.02);
+        box-shadow: 0 5px 15px rgba(56, 142, 60, 0.3);
+    }
+
+    .btn-danger {
+        border-radius: 8px;
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
+
+    .list-group-item {
+        border: none;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+        transition: background-color 0.3s;
+    }
+
+    .list-group-item:hover {
+        background-color: #f4f4f4;
+    }
+
+    .navbar {
+        background-color: #00796b;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 999;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .navbar .navbar-brand,
+    .navbar .nav-link,
+    .navbar form button {
+        color: white !important;
+    }
+
+    .navbar form {
+        margin-left: auto;
+    }
+
+    .navbar form button {
+        background: none;
+        border: none;
+        font-weight: bold;
+    }
+
+    .navbar form button:hover {
+        text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+{% if current_user.is_authenticated %}
+<nav class="navbar navbar-expand-lg px-4">
+    <a class="navbar-brand" href="#">Taskify</a>
+    <div class="ms-auto d-flex align-items-center">
+        <span class="me-3 text-white">👋 Hello, {{ current_user.username }}!</span>
+        <form method="POST" action="{{ url_for('main.logout') }}">
+            <button type="submit">🔓 Logout</button>
+        </form>
+    </div>
+</nav>
+{% endif %}
+
+<div class="tasks-container">
+    <h2>📋 Your Task List</h2>
+
+    <!-- Search Form -->
+    <form method="GET">
+        <input name="search" class="form-control" placeholder="🔍 Search tasks..." />
+    </form>
+
+    <!-- Add Task Form -->
+    <form method="POST" class="mt-4">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.title.label }}
+            {{ form.title(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.due_date.label }}
+            {{ form.due_date(class="form-control") }}
+        </div>
+
+        {{ form.submit(class="btn btn-success mt-2") }}
+    </form>
+
+    <!-- Task List -->
+    <ul class="list-group mt-4">
+        {% for task in tasks %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>
+                    <strong>{{ task.title }}</strong> <br>
+                    <small class="text-muted">Due: {{ task.due_date }}</small>
+                </span>
+                <a href="{{ url_for('main.delete', id=task.id) }}" class="btn btn-danger btn-sm">🗑 Delete</a>
+            </li>
+        {% else %}
+            <li class="list-group-item text-center text-muted">No tasks found.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

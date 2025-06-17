@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #e0f7fa, #ffffff);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .welcome-container {
+        text-align: center;
+        background-color: #ffffffee;
+        padding: 50px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .welcome-container h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #00796b;
+        margin-bottom: 30px;
+        animation: slideIn 1s ease-in-out;
+    }
+
+    .btn-custom {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        margin: 10px;
+        border-radius: 50px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    .btn-custom:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 576px) {
+        .welcome-container {
+            padding: 30px 20px;
+        }
+
+        .welcome-container h1 {
+            font-size: 2rem;
+        }
+
+        .btn-custom {
+            width: 100%;
+            margin: 10px 0;
+        }
+    }
+</style>
+
+<div class="welcome-container">
+    <h1>🚀 Welcome to <span style="color:#004d40;">Taskify</span></h1>
+    <a class="btn btn-primary btn-custom" href="{{ url_for('main.login') }}">🔐 Login</a>
+    <a class="btn btn-success btn-custom" href="{{ url_for('main.register') }}">📝 Register</a>
+</div>
+{% endblock %}
